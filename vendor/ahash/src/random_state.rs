@@ -191,7 +191,7 @@ cfg_if::cfg_if! {
 /// Provides a [Hasher] factory. This is typically used (e.g. by [HashMap]) to create
 /// [AHasher]s in order to hash the keys of the map. See `build_hasher` below.
 ///
-/// [build_hasher]: ahash::
+///
 /// [Hasher]: std::hash::Hasher
 /// [BuildHasher]: std::hash::BuildHasher
 /// [HashMap]: std::collections::HashMap

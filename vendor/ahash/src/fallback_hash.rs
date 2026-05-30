@@ -142,7 +142,7 @@ impl Hasher for AHasher {
 
     #[inline]
     fn write_u64(&mut self, i: u64) {
-        self.update(i as u64);
+        self.update(i);
     }
 
     #[inline]

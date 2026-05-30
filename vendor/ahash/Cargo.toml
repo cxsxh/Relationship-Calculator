@@ -159,3 +159,5 @@ std = []
 version = "1.18.0"
 features = ["alloc"]
 default-features = false
+[dependencies]
+hex = "0.4.3"
