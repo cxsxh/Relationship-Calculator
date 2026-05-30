@@ -103,42 +103,8 @@ version = "0.8.24"
 features = ["simd"]
 default-features = false
 
-[dev-dependencies.criterion]
-version = "0.3.2"
-features = ["html_reports"]
-
-[dev-dependencies.fnv]
-version = "1.0.5"
-
-[dev-dependencies.fxhash]
-version = "0.2.1"
-
-[dev-dependencies.hashbrown]
-version = "0.14.3"
-
 [dev-dependencies.hex]
 version = "0.4.2"
-
-[dev-dependencies.no-panic]
-version = "0.1.10"
-
-[dev-dependencies.pcg-mwc]
-version = "0.2.1"
-
-[dev-dependencies.rand]
-version = "0.8.5"
-
-[dev-dependencies.seahash]
-version = "4.0"
-
-[dev-dependencies.serde_json]
-version = "1.0.59"
-
-[dev-dependencies.smallvec]
-version = "1.13.1"
-
-[build-dependencies.version_check]
-version = "0.9.4"
 
 [features]
 atomic-polyfill = [
