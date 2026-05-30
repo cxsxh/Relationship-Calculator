@@ -1,0 +1,30 @@
+[package]
+name = "relationship_calculator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eframe = "0.29"
+serde = { version = "1", features = ["derive"] }
+
+[patch.crates-io]
+ahash = { path = "vendor/ahash" }
+crc32fast = { path = "vendor/crc32fast" }
+getrandom = { path = "vendor/getrandom" }
+libc = { path = "vendor/libc" }
+memoffset = { path = "vendor/memoffset" }
+num-traits = { path = "vendor/num-traits" }
+paste = { path = "vendor/paste" }
+proc-macro2 = { path = "vendor/proc-macro2" }
+quote = { path = "vendor/quote" }
+serde = { path = "vendor/serde" }
+serde_core = { path = "vendor/serde_core" }
+syn = { path = "vendor/syn" }
+thiserror = { path = "vendor/thiserror" }
+zerocopy = { path = "vendor/zerocopy" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
