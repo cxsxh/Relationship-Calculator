@@ -3,14 +3,13 @@ use core::hash::BuildHasher;
 use core::hash::Hash;
 use core::hash::Hasher;
 
-#[cfg(not(feature = "std"))]
-extern crate alloc;
-#[cfg(feature = "std")]
-extern crate std as alloc;
-
-#[cfg(specialize)]
+#[cfg(all(specialize, feature = "std"))]
+use std::string::String;
+#[cfg(all(specialize, feature = "std"))]
+use std::vec::Vec;
+#[cfg(all(specialize, not(feature = "std")))]
 use alloc::string::String;
-#[cfg(specialize)]
+#[cfg(all(specialize, not(feature = "std")))]
 use alloc::vec::Vec;
 
 /// Provides a way to get an optimized hasher for a given data type.

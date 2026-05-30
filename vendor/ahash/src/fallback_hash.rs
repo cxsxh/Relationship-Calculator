@@ -31,23 +31,23 @@ impl AHasher {
     #[inline]
     #[allow(dead_code)] // Is not called if non-fallback hash is used.
     pub(crate) fn new_with_keys(key1: u128, key2: u128) -> AHasher {
-        let pi: [u128; 2] = PI.convert();
-        let key1: [u64; 2] = (key1 ^ pi[0]).convert();
-        let key2: [u64; 2] = (key2 ^ pi[1]).convert();
+        let [pi0, pi1]: [u128; 2] = PI.convert();
+        let [key10, key11]: [u64; 2] = (key1 ^ pi0).convert();
+        let key2: [u64; 2] = (key2 ^ pi1).convert();
         AHasher {
-            buffer: key1[0],
-            pad: key1[1],
+            buffer: key10,
+            pad: key11,
             extra_keys: key2,
         }
     }
 
     #[allow(unused)] // False positive
     pub(crate) fn test_with_keys(key1: u128, key2: u128) -> Self {
-        let key1: [u64; 2] = key1.convert();
+        let [key10, key11]: [u64; 2] = key1.convert();
         let key2: [u64; 2] = key2.convert();
         Self {
-            buffer: key1[0],
-            pad: key1[1],
+            buffer: key10,
+            pad: key11,
             extra_keys: key2,
         }
     }

@@ -291,7 +291,7 @@ mod test {
 
     #[test]
     fn test_conversion() {
-        let input: &[u8] = b"dddddddd";
+        let input: &[u8] = b"dddddddd".as_ref();
         let bytes: u64 = as_array!(input, 8).convert();
         assert_eq!(bytes, 0x6464646464646464);
     }

@@ -10,13 +10,7 @@ cfg_if::cfg_if! {
         use crate::fallback_hash::*;
     }
 }
-cfg_if::cfg_if! {
-    if #[cfg(feature = "std")] {
-        extern crate std as alloc;
-    } else {
-        extern crate alloc;
-    }
-}
+extern crate alloc;
 
 #[cfg(feature = "atomic-polyfill")]
 use portable_atomic as atomic;
@@ -74,7 +68,7 @@ cfg_if::cfg_if! {
 
             SEEDS.get_or_init(|| {
                 let mut result: [u8; 64] = [0; 64];
-                getrandom::fill(&mut result).expect("getrandom::fill() failed.");
+                getrandom::fill(&mut result[..]).expect("getrandom::fill() failed.");
                 Box::new(result.convert())
             })
         }
@@ -233,8 +227,8 @@ impl RandomState {
     #[inline]
     pub fn new() -> RandomState {
         let src = get_src();
-        let fixed = get_fixed_seeds();
-        Self::from_keys(&fixed[0], &fixed[1], src.gen_hasher_seed())
+        let &[a, b] = get_fixed_seeds();
+        Self::from_keys(&a, &b, src.gen_hasher_seed())
     }
 
     /// Create a new `RandomState` `BuildHasher` based on the provided seeds, but in such a way
@@ -249,8 +243,9 @@ impl RandomState {
     #[inline]
     pub fn generate_with(k0: u64, k1: u64, k2: u64, k3: u64) -> RandomState {
         let src = get_src();
-        let fixed = get_fixed_seeds();
-        RandomState::from_keys(&fixed[0], &[k0, k1, k2, k3], src.gen_hasher_seed())
+        let &[a, _] = get_fixed_seeds();
+        let b = [k0, k1, k2, k3];
+        RandomState::from_keys(&a, &b, src.gen_hasher_seed())
     }
 
     fn from_keys(a: &[u64; 4], b: &[u64; 4], c: usize) -> RandomState {
@@ -263,18 +258,19 @@ impl RandomState {
             h.write_u64(r);
             h.finish()
         };
+        let &[b0, b1, b2, b3] = b;
         RandomState {
-            k0: mix(b[0], b[2]),
-            k1: mix(b[1], b[3]),
-            k2: mix(b[2], b[1]),
-            k3: mix(b[3], b[0]),
+            k0: mix(b0, b2),
+            k1: mix(b1, b3),
+            k2: mix(b2, b1),
+            k3: mix(b3, b0),
         }
     }
 
     /// Internal. Used by Default.
     #[inline]
     pub(crate) fn with_fixed_keys() -> RandomState {
-        let [k0, k1, k2, k3] = get_fixed_seeds()[0];
+        let &[[k0, k1, k2, k3], _] = get_fixed_seeds();
         RandomState { k0, k1, k2, k3 }
     }
 
@@ -287,8 +283,8 @@ impl RandomState {
     /// Note: This method does not require the provided seed to be strong.
     #[inline]
     pub fn with_seed(key: usize) -> RandomState {
-        let fixed = get_fixed_seeds();
-        RandomState::from_keys(&fixed[0], &fixed[1], key)
+        let &[a, b] = get_fixed_seeds();
+        RandomState::from_keys(&a, &b, key)
     }
 
     /// Allows for explicitly setting the seeds to used.
@@ -501,19 +497,22 @@ mod test {
     #[cfg(all(feature = "runtime-rng", not(all(feature = "compile-time-rng", test))))]
     #[test]
     fn test_not_pi() {
-        assert_ne!(PI, get_fixed_seeds()[0]);
+        let &[seeds, _] = get_fixed_seeds();
+        assert_ne!(PI, seeds);
     }
 
     #[cfg(all(feature = "compile-time-rng", any(not(feature = "runtime-rng"), test)))]
     #[test]
     fn test_not_pi_const() {
-        assert_ne!(PI, get_fixed_seeds()[0]);
+        let &[seeds, _] = get_fixed_seeds();
+        assert_ne!(PI, seeds);
     }
 
     #[cfg(all(not(feature = "runtime-rng"), not(feature = "compile-time-rng")))]
     #[test]
     fn test_pi() {
-        assert_eq!(PI, get_fixed_seeds()[0]);
+        let &[seeds, _] = get_fixed_seeds();
+        assert_eq!(PI, seeds);
     }
 
     #[test]
