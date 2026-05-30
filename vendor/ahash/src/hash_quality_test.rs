@@ -338,8 +338,6 @@ fn test_length_extension<T: Hasher>(hasher: impl Fn(u128, u128) -> T) {
 }
 
 fn test_sparse<T: Hasher>(hasher: impl Fn() -> T) {
-    use smallvec::SmallVec;
-
     let mut buf = [0u8; 256];
     let mut hashes = HashMap::new();
     for idx_1 in 0..255_u8 {
@@ -352,7 +350,7 @@ fn test_sparse<T: Hasher>(hasher: impl Fn() -> T) {
                     buf[idx_1 as usize] = value_1;
                     buf[idx_2 as usize] = value_2;
                     let hash_value = hash_with(&buf, &mut hasher());
-                    let keys = hashes.entry(hash_value).or_insert(SmallVec::<[[u8; 4]; 1]>::new());
+                    let keys = hashes.entry(hash_value).or_insert(Vec::<[u8; 4]>::new());
                     keys.push([idx_1, value_1, idx_2, value_2]);
                     buf[idx_1 as usize] = 0;
                     buf[idx_2 as usize] = 0;
