@@ -79,28 +79,6 @@ doctest = true
 bench = true
 doc = true
 
-[[test]]
-name = "bench"
-path = "tests/bench.rs"
-
-[[test]]
-name = "map_tests"
-path = "tests/map_tests.rs"
-
-[[test]]
-name = "nopanic"
-path = "tests/nopanic.rs"
-
-[[bench]]
-name = "ahash"
-path = "tests/bench.rs"
-harness = false
-
-[[bench]]
-name = "map"
-path = "tests/map_tests.rs"
-harness = false
-
 [dependencies.cfg-if]
 version = "1.0"
 
