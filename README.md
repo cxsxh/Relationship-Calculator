@@ -66,7 +66,7 @@ cargo test -j 1
 
 当前已验证结果：
 
-- `12 passed; 0 failed`
+- `32 passed; 0 failed`
 
 ## 开源交付说明
 

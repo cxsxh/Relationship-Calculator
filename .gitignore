@@ -5,6 +5,9 @@
 *.tmp
 *.temp
 /relationship_calculator.exe
+/dist/*.zip
+/dist/**/*.exe
+/dist/**/README.txt
 vendor/**/.github/
 vendor/**/tests/
 vendor/**/benches/

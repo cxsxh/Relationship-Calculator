@@ -8,6 +8,8 @@ use crate::data::relations::RELATION_DEFINITIONS;
 use crate::engine::calculator::{RelationCalculator, MAX_STEPS};
 use crate::models::{RelationResult, RelationType};
 
+const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
+
 pub struct RelationshipCalculatorApp {
     calculator: RelationCalculator,
     selected_relations: Vec<RelationType>,
@@ -71,9 +73,14 @@ impl RelationshipCalculatorApp {
                 .size(28.0)
                 .color(Color32::from_rgb(30, 55, 110)),
         );
-        ui.label(RichText::new("Rust 原生桌面版 · 干净简洁 · 本地离线计算").size(14.0));
+        ui.label(
+            RichText::new(format!(
+                "Rust 原生桌面版 v{APP_VERSION} · 干净简洁 · 本地离线计算"
+            ))
+            .size(14.0),
+        );
         ui.add_space(6.0);
-        ui.label("选择关系链后即可得到标准称呼和多种常见叫法。");
+        ui.label("选择关系链后即可得到标准称呼、多种常见叫法，以及第五代范围内的延展关系。");
     }
 
     fn draw_chain_panel(&mut self, ui: &mut egui::Ui) {
@@ -249,6 +256,14 @@ impl RelationshipCalculatorApp {
             ui.add_space(10.0);
             ui.label(RichText::new("说明").strong());
             ui.label(&self.result.message);
+            if self.result.is_matched {
+                ui.add_space(8.0);
+                ui.label(
+                    RichText::new("提示：部分较远亲或姻亲会优先显示系统化标准称呼，常见叫法可参考上方别名。")
+                        .size(13.0)
+                        .color(Color32::from_rgb(104, 96, 74)),
+                );
+            }
         });
 
         ui.add_space(12.0);
