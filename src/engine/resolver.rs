@@ -39,6 +39,7 @@ fn resolve_extended(relations: &[RelationType]) -> Option<&'static str> {
         RelationType::Wife => title_of_spouse(parent_title, false),
         _ => None,
     }
+
 }
 
 fn title_of_descendant(parent_title: &str, male: bool) -> Option<&'static str> {
