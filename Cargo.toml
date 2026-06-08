@@ -23,6 +23,12 @@ syn = { path = "vendor/syn" }
 thiserror = { path = "vendor/thiserror" }
 zerocopy = { path = "vendor/zerocopy" }
 
+[profile.dev]
+incremental = false
+
+[profile.test]
+incremental = false
+
 [profile.release]
 opt-level = 3
 lto = "thin"
